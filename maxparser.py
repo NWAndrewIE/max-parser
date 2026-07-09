@@ -26,7 +26,7 @@ ________________█████
  __________██                ██
 """
 
-import os, logging, random, requests
+import os, logging, random, requests, json
 from time import sleep
 
 # example: https://i.oneme.ru/i?r=BTE2sh_eZW7g8kugOdIm2Not5x-NU1dtPrcz-J_uAAH38kX7rfYAhZiNpfCTjwQmWO8 (67 symbs)
@@ -38,6 +38,10 @@ FILES_DIRECTORY = os.path.join(MAIN_DIRECTORY, "max_files")
 LOG_FILE = "maxparserlog.txt"
 ALPHABET = "abcdefghijklnmopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"
 INVALID_SIZE = [0, 503, 5082, 4939, 4940, 4941, 12003, 5556]
+
+jsonfile = json.load(open("config.cfg", "r"))
+DELAY = jsonfile.get("delay", 0.1)
+INFINITE = jsonfile.get("infinite", False)
 
 def create_folder(folder_name: str) -> None:
     """
@@ -96,7 +100,10 @@ if __name__ == "__main__":
     logging.basicConfig(filename=os.path.join(MAIN_DIRECTORY, LOG_FILE), level=logging.INFO, 
                         format='%(asctime)s - %(levelname)s - %(message)s')
     logging.info("---------------------------------------")
-    amount = int(input("Enter the amount of files to try to download: "))
+    if INFINITE:
+        amount = float('inf')
+    else:
+        amount = int(input("Enter the amount of files to try to download: "))
     while downloaded < amount:
         random_string = ''.join(random.choices(ALPHABET, k=random.randint(42, 43)))
         link = ONEME_FILES_PATH + random_string
@@ -113,4 +120,4 @@ if __name__ == "__main__":
             else:
                 logging.error(f"Error accessing link: {link} - Status code: {requests.get(link).status_code}")
                 print(f"Error accessing link: {link} - Status code: {requests.get(link).status_code}")
-        sleep(0.1)  # To avoid overwhelming the server with requests
+        sleep(DELAY)  # To avoid overwhelming the server with requests
