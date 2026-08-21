@@ -30,7 +30,7 @@ import os, logging, random, requests, json
 from time import sleep
 
 # example: https://i.oneme.ru/i?r=BTE2sh_eZW7g8kugOdIm2Not5x-NU1dtPrcz-J_uAAH38kX7rfYAhZiNpfCTjwQmWO8 (67 symbs)
-test_part = "5x-NU1dtPrcz-J_uAAH38kX7rfYAhZiNpfCTjwQmWO8"
+test_part = "5x-NU1dtPrcz-J_uAAH38kX7rfYAhZiNpfCTjwQmWO8"  # leaked
 
 ONEME_FILES_PATH = "https://i.oneme.ru/i?r=BTE2sh_eZW7g8kugOdIm2Not"    # identical for all files, only the last part changes
 MAIN_DIRECTORY = "max_parser"
